@@ -1,0 +1,25 @@
+
+
+/opt/asdflab_sss/                       PREFIX=/opt/asdflab_sss
+
+    cfg/                                CFGDIR=${PREFIX}/cfg
+        asdflab_sss_agent.conf
+        asdflab_sss_scheduler.conf
+        asdflab_sss_webui_server.conf
+
+    bin/                                BINDIR=${PREFIX}/bin
+        asdflab_sss_agent
+        asdflab_sss_scheduler
+
+    webui/
+        asdflab_sss_webui_server
+
+    log/                                LOGDIR=${PREFIX}/log
+
+    modules/                            MODULESDIR=${PREFIX}/modules
+        snapshots/
+            asdflab/
+                imap.py
+            custom/
+                module1.py
+
