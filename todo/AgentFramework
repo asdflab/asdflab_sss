@@ -17,7 +17,6 @@ Snapshot-data is split into two parts:
 - All other information, which can include large bulks of data
   Storage must be handled by the sub-module defining the snapshot. It can be database, files, or whatever needed.
 
-
 Actually executing a snapshot is accompliced in three ways:
 - Manually perform a snapshot from the commandline
 - Executing a snapshot using a local scheduler like cron

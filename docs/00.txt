@@ -1,0 +1,50 @@
+
+0.0. Motivation
+
+A System State Snapshot is a picture, of how a set of dynamic states of a system looked like, at a certain point in time.
+Using this snapshot, the System's state at that time can be stored for investigation, change-tracking, and even restoration.
+
+The Author has been using this technique for tracking changes for such diverse tings as:
+- The files present in a folder
+- The messages present in an imap-account
+- The actual usage of IP-addresses in an address-scope
+- The existence and placement of virtual machines in a cluster
+- The presence of interfaces, vlans, and MAC-addresses on network switches
+
+Other ideas for use of this system:
+- Backup of configuration of network devices
+- Tracking changes of routes through the Internet
+
+
+This project is the Authors endavour to formalize these techniques into an extensible framework for easy deployment of snapshot functionality.
+The project focuses on delivering the framework around the actual code to retrieve the information, and leave the retrieval code to be implemented by other developers.
+That said, this project still delivers some retrieval modules, that can be used as-is, or serve as an example for other implementations.
+
+
+
+0.1. Overview
+
+This project is divided into four parts:
+- The Agent: A modularized framework for handling the invocation, information-retrival, and metadata-storage of the snapshots
+- The Scheduler: An application that keeps time and tells agents when to perform snapshots
+- The WebUI: A simplified, quick-start, web-application to manage schedules, logs, and snapshots
+- The modules: Extension modules for the framework for things such as retrieving state-information and storing meta- and bulk-data
+
+
+The project uses one or more databases for storing administrative data and snapshot meta-data.
+As different database-servers use different syntaxes, the framework contains an abstraction-interface for the database-operations, where the actual implementation of storage and retrival is done by a database-module.
+The project comes with database-modules for MySQL and MSSQL, and new modules can be implemented to support other database-servers if needed.
+
+Actual retrival of state-information is implemented in snapshot-modules, and new modules can be developed to support the needs of the user.
+The project comes with some snapshot-modules by default, the actual list can be found later in this documentation.
+
+If storage of bulk-data is needed for a snapshot, each snapshot-module can implement its own storage or use one of the frameworks storage-modules.
+The project comes with storage-modules for simple file- and database-storage, and new modules can be developed to support other methods.
+
+If retrieving a snapshot requires information other than what is passed on through the framework system, the snapshot-module developer is free to implement any means neccesary, but, to support flexibility, configuration needed should be part of the data passed when invoking the snapshot.
+It is possible to have this information encrypted to prevent disclosure of privileged information.
+
+
+
+
+
