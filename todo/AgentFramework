@@ -1,0 +1,49 @@
+
+### Define purpose of application #######################################################################
+
+asdflab_sss_agent is a framework for performing snapshots of diverse system states.
+
+The actual system and state to snapshot is defined by sub-modules, thereby facillitating extensions and customizations.
+
+The framework defines a common structure for registering, scheduling, logging, and storing the snapshot-data.
+
+Contents of a snapshot is stored in a "continiously differential" way, meaning that each invocation registers
+what changed since last time. This may be compared to one of the typical strategies for 
+backup-applications: Differential (another being Full+Incremental)
+
+Snapshot-data is split into two parts:
+- The information common to all types of snapshots: Where and When wax X ssen, and the identity-info on X
+  This information is stored alongside framework data in a database
+- All other information, which can include large bulks of data
+  Storage must be handled by the sub-module defining the snapshot. It can be database, files, or whatever needed.
+
+
+Actually executing a snapshot is accompliced in three ways:
+- Manually perform a snapshot from the commandline
+- Executing a snapshot using a local scheduler like cron
+- Act as a deamon, and look for scheduling events in a central database
+
+
+
+
+
+
+
+
+
+### Determine structure of application ##################################################################
+
+### Determine cmdline interface of application ##########################################################
+
+
+asdflab_sss_agent
+
+    daemon
+
+    localsched <snapshotname>
+
+    snapshot <snapshotname>
+
+
+
+### 
