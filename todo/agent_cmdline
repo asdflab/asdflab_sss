@@ -1,0 +1,12 @@
+
+
+asdflab_sss_agent
+
+    daemon
+
+    localsched <snapshotname>
+
+    snapshot <snapshotname>
+
+
+

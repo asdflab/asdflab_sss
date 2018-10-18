@@ -1,5 +1,4 @@
 
-### Define purpose of application #######################################################################
 
 asdflab_sss_agent is a framework for performing snapshots of diverse system states.
 
@@ -28,21 +27,3 @@ Actually executing a snapshot is accompliced in three ways:
 
 
 
-
-
-### Determine structure of application ##################################################################
-
-### Determine cmdline interface of application ##########################################################
-
-
-asdflab_sss_agent
-
-    daemon
-
-    localsched <snapshotname>
-
-    snapshot <snapshotname>
-
-
-
-### 

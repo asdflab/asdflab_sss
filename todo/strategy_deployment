@@ -1,4 +1,14 @@
 
+decide how this application is packages and installed
+contemplate PyPi/pip and yum
+
+
+
+
+
+
+
+
 
 /opt/asdflab_sss/                       PREFIX=/opt/asdflab_sss
 
