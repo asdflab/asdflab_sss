@@ -1,5 +1,12 @@
 
 
+asdflab_sss_agent should be able to do:
+- Start as a daemon, look for schedules in a database, start snapshots
+- Be invoked by a local scheduler (like cron), and start a snapshot
+- Be invoked manually, and start a snapshot
+
+
+
 asdflab_sss_agent
 
     daemon

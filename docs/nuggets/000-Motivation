@@ -1,0 +1,18 @@
+A System State Snapshot is a picture, of how a set of dynamic states of a system looked like, at a certain point in time.
+Using this snapshot, the System's state at that time can be stored for investigation, change-tracking, and even restoration.
+
+The Author has been using this technique for tracking changes for such diverse tings as:
+- The files present in a folder
+- The messages present in an imap-account
+- The actual usage of IP-addresses in an address-scope
+- The existence and placement of virtual machines in a cluster
+
+Other ideas for use of this system:
+- Backup of configuration of network devices
+- Tracking changes of routes through the Internet
+
+
+This project is the Authors endavour to formalize these techniques into an extensible framework for easy deployment of snapshot functionality.
+The project focuses on delivering the framework around the actual code to retrieve the information, and leave the retrieval code to be implemented by other developers.
+That said, this project still delivers some retrieval modules, that can be used as-is, or serve as an example for other implementations.
+

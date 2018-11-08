@@ -1,0 +1,10 @@
+This project is divided into four parts:
+- The Agent: A modularized framework for handling the invocation and metadata-storage of the snapshots
+- The modules: Extension modules for the agent-framework for things such as retrieving state-information and storing bulk-data
+- The Scheduler: An application that keeps time and tells agents when to perform snapshots
+- The WebUI: A simplified, quick-start, web-application to manage schedules, logs, and snapshots
+
+The project uses a (one or more) database for storing administrative data and snapshot metadata.
+If bulk storage of data is needed for a snapshot, each snapshot-module can implement its own storage or use one of the frameworks storage-modules.
+
+

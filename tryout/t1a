@@ -1,0 +1,47 @@
+#!/opt/miniconda3/envs/default-36/bin/python
+
+import pprint
+
+
+
+
+def InfoList():
+
+    def __hansgen():
+        #return None
+        for _item in [
+            { 'idx': 1, 'name':'111', 'xyz':'xyz', },
+            { 'idx': 2, 'name':'222', 'xyz':'xyz', },
+            { 'idx': 3, 'name':'333', 'xyz':'xyz', },
+            { 'idx': 4, 'name':'444', 'xyz':'xyz', },
+            { 'idx': 5, 'name':'555', 'xyz':'xyz', },
+            ]:
+            yield _item
+
+    return __hansgen
+
+
+
+
+
+
+L= InfoList()
+print(type(L))
+
+if L!=None:
+    #L=L()
+    #print(type(L))
+
+    #I=next(L,None)
+    #print(type(I))
+    #print(I)
+
+    #I=next(L,None)
+    #print(type(I))
+    #print(I)
+
+    for I in L():
+        print(type(I))
+        print(I)
+
+

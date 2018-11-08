@@ -1,4 +1,4 @@
-# !!! Run this script using the python-executable that should run the application !!!
+# !!! Run this install-script using the python-executable that should run the application !!!
 
 
 #--- Only import sys and os in the beginning ----------

@@ -1,0 +1,140 @@
+#!/opt/miniconda3/envs/default-36/bin/python
+
+# Depends: pip install iso8601 PyMySQL ConfigArgParse python-daemon lockfile
+
+import traceback
+import os
+import io
+import signal
+import syslog
+import time
+import datetime
+import iso8601                # pip install iso8601
+import pprint
+import inspect
+import lockfile               # pip install lockfile
+import daemon                 # pip install python-daemon
+import subprocess
+import logging
+import configargparse         # pip install ConfigArgParse
+import pymysql.cursors        # pip install PyMySQL
+
+from Global import *
+import SnapshotEngine
+
+
+
+""" Debuglevels
+
+0 - Debugging off
+1 - Show major actions
+2 - Show minor actions
+3 - Show enter/leave marks, description of externally run commands, etc
+4 - Show profiling-data
+
+"""
+
+
+LOG= None
+LOG_formatter= None
+LOG_handler= None
+
+
+
+def log_setup():
+    global OPTS
+    global LOG
+    global LOG_handler
+    
+    LOG_handler= logging.StreamHandler(stream=sys.stdout)
+    LOG_handler.setFormatter(LOG_formatter)
+    LOG.addHandler(LOG_handler)
+
+def log_sighup(signum, frame):
+    global OPTS
+    global LOG
+    global LOG_handler
+    if (OPTS.cmd != 'daemon'):
+        return
+    logging.info("{} [{}]: {}".format(syslog.LOG_INFO, os.getpid(), "Logfile flushed"))
+    LOG.removeHandler(LOG_handler)
+    del LOG_handler
+    LOG_handler= None
+    log_setup()
+
+
+
+def log_output(severity, processid, workername, taskname, taskid, message):
+    logging.info("{} [{}]: {}.{}[{}]: {}".format(
+        severity, 
+        processid, 
+        workername, 
+        taskname, 
+        taskid, 
+        message
+    ))
+
+
+def log_critical(message):
+    log_output(syslog.LOG_CRIT, os.getpid(), 'MAIN', get_callername(), '', message)
+
+def log_info(message):
+    #log_output(time.strftime('%Y%m%d-%H%M%S%z'), syslog.LOG_INFO, os.getpid(), 'MAIN', get_callername(), '', message)
+    log_output(syslog.LOG_INFO, os.getpid(), 'MAIN', get_callername(), '', message)
+
+def log_debug(level, message):
+    global OPTS
+    if (level>OPTS.flag_verbosity): return
+    #log_output(time.strftime('%Y%m%d-%H%M%S%z'), syslog.LOG_DEBUG, os.getpid(), 'MAIN', get_callername(), '', message)
+    log_output(syslog.LOG_DEBUG, os.getpid(), 'MAIN', get_callername(), '', message)
+
+
+
+
+#----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+#----------------------------------------------------------------------------------------------------------------------------------------------
+if __name__ == '__main__':
+
+
+    arg_agentid= 4711
+    opt_daemon= False
+    arg_maindb_info= 'asdflab/mysql::localhost:3306;erisen;"shsdf;sdh\"h"'
+    arg_snapshotid= 0
+
+
+
+
+    #--- Set up logging ----------
+    LOG= logging.getLogger()
+    LOG.setLevel(logging.DEBUG)
+    LOG_formatter= logging.Formatter('%(asctime)s %(message)s', '%Y-%m-%d %H:%M:%S %z')
+    LOG_formatter.converter= time.gmtime
+    log_setup()
+
+
+
+    log_info("Starting")
+
+    with SnapshotEngine.DefaultEngine(
+            verbosity=1,
+            initargs=[
+                arg_agentid,
+                opt_daemon,
+                arg_maindb_info,
+            ],
+            ) as snapshotengine:
+        if not opt_daemon:
+            snapshotengine.SubmitManualSnapshot(args=[
+                arg_snapshotid,
+            ])
+        snapshotengine.LoopUntilDone()
+
+    ##END with SnapshotEngine as snapshotengine
+
+    log_info("Exiting")
+
+##END __main__

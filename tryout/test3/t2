@@ -1,0 +1,17 @@
+#!/opt/miniconda3/envs/default-36/bin/python
+
+import regex
+import re
+import csv
+
+
+
+
+arg_maindb_info= 'asdflab/mysql;localhost:3306;"erisen";"shsd\\"fsdhh";gg'
+
+
+
+print(regex.findall(r'(?:[^\s;\"]|\"(?:\\"|[^\"])+\")+', arg_maindb_info))
+
+print(list(csv.reader([arg_maindb_info], delimiter=';', escapechar='\\', quotechar='"'))[0])
+

@@ -1,0 +1,9 @@
+
+PYTHON=${PYTHON:-`which python`}
+echo -n "Enter path to the python executable to run this application [${PYTHON}]: "
+read -e INPUT
+PYTHON=${INPUT:-${PYTHON}}
+echo "PYTHON=${PYTHON}"
+    
+${PYTHON} ./INSTALL.py
+

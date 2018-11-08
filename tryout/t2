@@ -1,0 +1,139 @@
+#!/opt/miniconda3/envs/default-36/bin/python
+
+import inspect
+import importlib.util
+import pprint
+
+
+def GetModule(PATH):
+    _spec= importlib.util.spec_from_file_location("MOD", PATH)
+    _result= importlib.util.module_from_spec(_spec)
+    _spec.loader.exec_module(_result)
+    return _result
+
+def CheckFunction(OBJ, FUNC):
+    #return FUNC in dir(OBJ) and callable(getattr(OBJ, FUNC))
+    return FUNC in dir(OBJ) and inspect.isfunction(getattr(OBJ, FUNC))
+
+
+
+class Worker(object):
+
+    def __init__(AgentInfo, SnapshotDef):
+        self.AgentInfo= AgentInfo
+        self.SnapshotDef= SnapshotDef
+        
+        self.StateinfoModule = GetModule('./mod-stateinfo-'+self.SnapshotDef['StateinfoModule']+'.py')
+        self.DocinfoModule   = GetModule('./mod-docinfo-'+self.SnapshotDef['DocinfoModule']+'.py')
+
+
+    def run(ParentObject, ClassName):
+        if ClassName==None:
+            ClassName= self.SnapshotDef['TLO']
+
+        Scan(ParentObject, ClassName)
+
+
+
+    def Scan(ParentObject, ClassName, Extra=None):
+
+
+        def Do(Action, Item):
+            pass
+
+
+        StateinfoList = self.StateinfoModule.EnumObjects(self.SnapshotDef, ParentObject, ClassName)
+        DocinfoList   = self.DocinfoModule.EnumObjects(self.SnapshotDef, ParentObject, ClassName)
+
+        if StateinfoList==None:
+
+            if DocinfoList == None:
+                raise Exception('Both Stateinfo and Docinfo is empty, cannot continue')
+
+            for Item in DocinfoList(): 
+                Do('D', Item)
+
+        else:
+
+            StateinfoList= StateinfoList()
+            if DocinfoList!=None:
+                DocinfoList= DocinfoList()
+
+            StateinfoItem= next(StateinfoList, None)
+            DocinfoItem= next(DocinfoList, None)
+
+            while True:
+                if StateinfoItem==None and DocinfoItem==None: break
+
+                if DocinfoItem==None:
+                    Do('S', StateinfoItem)
+                    StateinfoItem= next(StateinfoList, None)
+                    continue
+
+                if StateinfoItem==None:
+                    Do('D', DocinfoItem)
+                    DocinfoItem= next(DocinfoList, None)
+                    continue
+
+                Diff=CompareIDs(SnapshotDef, StateinfoItem, DocinfoItem)
+
+                if Diff < 0:
+                    Do('S', StateinfoItem)
+                    StateinfoItem= next(StateinfoList, None)
+                    continue
+
+                if Diff > 0:
+                    Do('D', DocinfoItem)
+                    DocinfoItem= next(DocinfoList, None)
+                    continue
+
+                Do('B', StateinfoItem)
+
+            #END while True
+
+        #END if StateinfoList==
+
+    #END def Scan()
+
+
+
+
+SnapshotDef= {
+    'ID': 4321,
+    'Name': 'Backup IMAP-accounts',
+    'StateinfoModule': 'imapbackup',
+    'DocinfoModule': 'imapaccounts',
+    'TLO': 'imapaccount',
+}
+
+
+
+
+
+
+
+
+
+#StateinfoModule= GetModule('./mod-stateinfo-'+SnapshotDef['StateinfoModule']+'.py')
+#if not CheckFunction(StateinfoModule, 'GetDef'): 
+#    print("ERROR: Stateinfo-module does not contain function GetDef")
+#    exit(1)
+#
+#DocinfoModule= GetModule('./mod-docinfo-'+SnapshotDef['DocinfoModule']+'.py')
+
+
+
+W= Worker(None, SnapshotDef)
+W.run(None, SnapshotDef['TLO']))
+
+
+
+Scan(SnapshotDef, None, SnapshotDef['TLO'])
+
+
+
+
+
+
+
+
